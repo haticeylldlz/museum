@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Admin User',
             'email' => 'admin@example.com',
+            'is_admin' => true,
         ]);
 
         $this->call(MuseumExhibitionSeeder::class);

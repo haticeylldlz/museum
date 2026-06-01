@@ -4,14 +4,16 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Exhibitions') }}
             </h2>
-            <div class="flex gap-2">
-                <a href="{{ route('museums.index') }}" class="inline-flex items-center rounded-md bg-gray-800 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white hover:bg-gray-700">
-                    {{ __('Museums') }}
-                </a>
-                <a href="{{ route('exhibitions.create') }}" class="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white hover:bg-indigo-500">
-                    {{ __('Add Exhibition') }}
-                </a>
-            </div>
+            @if (auth()->user()->isAdmin())
+                <div class="flex gap-2">
+                    <a href="{{ route('museums.index') }}" class="inline-flex items-center rounded-md bg-gray-800 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white hover:bg-gray-700">
+                        {{ __('Museums') }}
+                    </a>
+                    <a href="{{ route('exhibitions.create') }}" class="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white hover:bg-indigo-500">
+                        {{ __('Add Exhibition') }}
+                    </a>
+                </div>
+            @endif
         </div>
     </x-slot>
 
@@ -50,7 +52,9 @@
                                         <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">{{ __('Title') }}</th>
                                         <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">{{ __('Museum') }}</th>
                                         <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">{{ __('Description') }}</th>
-                                        <th class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">{{ __('Actions') }}</th>
+                                        @if (auth()->user()->isAdmin())
+                                            <th class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">{{ __('Actions') }}</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-200 bg-white">
@@ -60,14 +64,16 @@
                                             <td class="px-4 py-3 text-sm font-medium">{{ $exhibition->title }}</td>
                                             <td class="px-4 py-3 text-sm">{{ $exhibition->museum->name }}</td>
                                             <td class="px-4 py-3 text-sm text-gray-600">{{ Str::limit($exhibition->description, 120) }}</td>
-                                            <td class="whitespace-nowrap px-4 py-3 text-right text-sm">
-                                                <a href="{{ route('exhibitions.edit', $exhibition) }}" class="text-indigo-600 hover:underline">{{ __('Edit') }}</a>
-                                                <form method="POST" action="{{ route('exhibitions.destroy', $exhibition) }}" class="inline" onsubmit="return confirm('{{ __('Delete this exhibition?') }}');">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="ms-3 text-red-600 hover:underline">{{ __('Delete') }}</button>
-                                                </form>
-                                            </td>
+                                            @if (auth()->user()->isAdmin())
+                                                <td class="whitespace-nowrap px-4 py-3 text-right text-sm">
+                                                    <a href="{{ route('exhibitions.edit', $exhibition) }}" class="text-indigo-600 hover:underline">{{ __('Edit') }}</a>
+                                                    <form method="POST" action="{{ route('exhibitions.destroy', $exhibition) }}" class="inline" onsubmit="return confirm('{{ __('Delete this exhibition?') }}');">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="ms-3 text-red-600 hover:underline">{{ __('Delete') }}</button>
+                                                    </form>
+                                                </td>
+                                            @endif
                                         </tr>
                                     @endforeach
                                 </tbody>

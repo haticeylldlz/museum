@@ -49,4 +49,11 @@
             </x-primary-button>
         </div>
     </form>
+
+    <p class="mt-6 text-center text-sm text-gray-600">
+        {{ __('Already registered?') }}
+        <a href="{{ route('login') }}" class="font-medium text-indigo-600 hover:text-indigo-500 underline">
+            {{ __('Log in') }}
+        </a>
+    </p>
 </x-guest-layout>
